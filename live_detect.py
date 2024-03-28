@@ -1,6 +1,20 @@
 import cv2
 import face_recognition as facrec
 import os
+import RPi.GPIO as GPIO
+import time
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(11,GPIO.OUT)
+def action():
+    GPIO.output(11,1)
+    time.sleep(1)
+    GPIO.output(11,0)
+    time.sleep(1)
+    GPIO.output(11,1)
+    time.sleep(1)
+    GPIO.output(11,0)
+    time.sleep(1)
+    
 encodings={}
 directory='/home/robot/Documents/face_detect/images'
 for filename in os.listdir(directory):
@@ -24,6 +38,7 @@ while check==1:
             result=facrec.compare_faces([encodings[e]],encode)
             if result == [True]:
                 print(e)
+                action()
                 check =0
             else:
                 continue
